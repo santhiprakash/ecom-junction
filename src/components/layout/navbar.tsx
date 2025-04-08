@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/button";
@@ -10,15 +12,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, HelpCircle, LogOut, Settings, User } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { Bell, HelpCircle, LogOut, Settings, User, Menu } from "lucide-react";
+import { useState } from "react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
     logout();
   };
 
@@ -31,7 +33,7 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="border-b bg-white">
+    <header className="border-b bg-background">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-bold">AffiliateHub</span>
@@ -41,6 +43,9 @@ export const Navbar = () => {
           <Link href="/" className="text-sm font-medium hover:underline">
             Home
           </Link>
+          <Link href="/collections" className="text-sm font-medium hover:underline">
+            Collections
+          </Link>
           {isAuthenticated && (
             <>
               <Link href="/dashboard" className="text-sm font-medium hover:underline">
@@ -48,12 +53,6 @@ export const Navbar = () => {
               </Link>
               <Link href="/products" className="text-sm font-medium hover:underline">
                 My Products
-              </Link>
-              <Link href="/analytics" className="text-sm font-medium hover:underline">
-                Analytics
-              </Link>
-              <Link href="/help" className="text-sm font-medium hover:underline">
-                Help Center
               </Link>
             </>
           )}
@@ -112,14 +111,63 @@ export const Navbar = () => {
             </>
           ) : (
             <>
-              <Button variant="ghost" asChild>
-                <Link href="/login">Log in</Link>
-              </Button>
-              <Button asChild>
-                <Link href="/register">Sign up</Link>
-              </Button>
+              <div className="hidden md:flex items-center gap-4">
+                <Button variant="ghost" asChild>
+                  <Link href="/auth/login">Log in</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/auth/register">Sign up</Link>
+                </Button>
+              </div>
             </>
           )}
+          
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <div className="flex flex-col gap-4 mt-8">
+                <Link href="/" className="text-base font-medium hover:underline">
+                  Home
+                </Link>
+                <Link href="/collections" className="text-base font-medium hover:underline">
+                  Collections
+                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link href="/dashboard" className="text-base font-medium hover:underline">
+                      Dashboard
+                    </Link>
+                    <Link href="/products" className="text-base font-medium hover:underline">
+                      My Products
+                    </Link>
+                    <Link href="/profile" className="text-base font-medium hover:underline">
+                      Profile
+                    </Link>
+                    <Link href="/settings" className="text-base font-medium hover:underline">
+                      Settings
+                    </Link>
+                    <Button onClick={handleLogout} variant="outline" className="mt-4">
+                      Log out
+                    </Button>
+                  </>
+                ) : (
+                  <div className="flex flex-col gap-2 mt-4">
+                    <Button asChild variant="outline">
+                      <Link href="/auth/login">Log in</Link>
+                    </Button>
+                    <Button asChild>
+                      <Link href="/auth/register">Sign up</Link>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

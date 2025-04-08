@@ -1,10 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClient } from "@/lib/supabase/client";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,9 +34,8 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuthStore();
+  const { register, isLoading } = useAuthStore();
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -48,57 +48,14 @@ export const RegisterForm = () => {
   });
 
   const onSubmit = async (values: RegisterFormValues) => {
-    setIsLoading(true);
     setError(null);
 
     try {
-      const supabase = createClient();
-      
-      // Register the user
-      const { data, error } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-        options: {
-          data: {
-            name: values.name,
-          },
-        },
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.user) {
-        // Create a profile record in the database
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            name: values.name,
-            email: values.email,
-            role: UserRole.USER, // Default role for new users
-            created_at: new Date().toISOString(),
-          });
-
-        if (profileError) {
-          throw profileError;
-        }
-
-        setUser({
-          id: data.user.id,
-          email: data.user.email!,
-          name: values.name,
-          role: UserRole.USER,
-          created_at: data.user.created_at,
-        });
-
-        router.push('/dashboard');
-      }
+      // Use the mock register function from our auth store
+      await register(values.email, values.password, values.name);
+      router.push('/dashboard');
     } catch (error: any) {
       setError(error.message || "Failed to sign up");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -181,7 +138,7 @@ export const RegisterForm = () => {
       
       <div className="mt-4 text-center text-sm">
         Already have an account?{" "}
-        <Link href="/login" className="text-blue-600 hover:text-blue-800">
+        <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
           Sign in
         </Link>
       </div>

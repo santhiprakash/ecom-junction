@@ -1,8 +1,15 @@
-import { createBrowserClient } from '@supabase/ssr';
+"use client";
+
+// This is a placeholder file for future Supabase integration
+// Currently we're using mock data for development
 
 export const createClient = () => {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  // Mock client implementation
+  return {
+    auth: {
+      signOut: async () => ({ error: null }),
+      getSession: async () => ({ data: { session: null }, error: null }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+    }
+  };
 };

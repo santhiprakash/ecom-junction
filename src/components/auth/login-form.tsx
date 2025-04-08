@@ -1,10 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClient } from "@/lib/supabase/client";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,9 +28,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuthStore();
+  const { login, isLoading } = useAuthStore();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -40,44 +40,14 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true);
     setError(null);
 
     try {
-      const supabase = createClient();
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.user) {
-        // Fetch user profile from database
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', data.user.id)
-          .single();
-
-        setUser({
-          id: data.user.id,
-          email: data.user.email!,
-          name: profileData?.name || data.user.email!.split('@')[0],
-          role: profileData?.role || 'user',
-          avatar_url: profileData?.avatar_url,
-          created_at: data.user.created_at,
-        });
-
-        router.push('/dashboard');
-      }
+      // Use the mock login function from our auth store
+      await login(values.email, values.password);
+      router.push('/dashboard');
     } catch (error: any) {
       setError(error.message || "Failed to sign in");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -137,7 +107,7 @@ export const LoginForm = () => {
       
       <div className="mt-4 text-center text-sm">
         Don't have an account?{" "}
-        <Link href="/register" className="text-blue-600 hover:text-blue-800">
+        <Link href="/auth/register" className="text-blue-600 hover:text-blue-800">
           Sign up
         </Link>
       </div>
