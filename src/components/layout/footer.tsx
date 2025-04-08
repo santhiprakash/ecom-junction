@@ -4,8 +4,8 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="border-t bg-white">
-      <div className="container px-4 py-8 md:px-6">
+    <footer className="border-t bg-background">
+      <div className="container mx-auto px-4 py-8 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
             <h3 className="text-lg font-bold">AffiliateHub</h3>
@@ -99,12 +99,15 @@ export const Footer = () => {
         </div>
         
         <div className="mt-8 border-t pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+          <div className="flex flex-col items-center text-center gap-4 md:flex-row md:justify-between">
             <p className="text-sm text-muted-foreground">
               &copy; {currentYear} AffiliateHub. All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground">
-              <span className="font-medium">Affiliate Disclaimer:</span> As an Amazon Associate and affiliate for other companies, I earn from qualifying purchases. This means I may receive a commission if you click on a link and make a purchase. This does not affect the price you pay.
+          </div>
+          
+          <div className="mt-4 p-4 bg-muted/30 rounded-lg text-center">
+            <p className="text-sm text-muted-foreground max-w-4xl mx-auto">
+              <span className="font-medium">Affiliate Disclaimer:</span> This website contains affiliate links. If you click through and make a purchase, we may receive a commission at no additional cost to you. This helps support the platform and allows us to continue providing valuable content. All product recommendations are based on our honest opinions and we only endorse products we believe in.
             </p>
           </div>
         </div>
