@@ -1,0 +1,29 @@
+Develop a comprehensive affiliate marketing portal that enables users to discover, organize, and share affiliate products from various sources. The platform should showcase a modern and interactive user interface that prioritizes ease of use, ensuring that users can efficiently manage their affiliate product collections.
+
+Key features should include an intuitive product import system that allows users to paste affiliate links from platforms like Amazon to automatically add products. The application should support robust categorization through labels and tags to help users organize their product collections effectively.
+
+Specialized features may include:
+- **One-Click Product Import**: A functionality that extracts product details (title, description, price, images) when a user pastes an affiliate link from supported platforms.
+- **Custom Categorization**: A flexible tagging and labeling system enabling users to create meaningful organization of their product collections.
+- **Collection Sharing**: Tools to create and share curated product collections via social media or unique links.
+- **Product Performance Tracking**: Analytics to help users understand which products generate the most interest and conversions.
+- **Search and Filter System**: Advanced search capabilities to quickly find products across all collections based on various criteria.
+
+Overall, the portal should serve as a comprehensive solution for affiliate marketers to manage their product portfolios, track performance, and maximize conversion opportunities.
+
+Make the application responsive and user-friendly, with a straightforward and intuitive interface that allows users to navigate easily. Implement the UI with Next.js and Tailwind CSS for faster development and a more consistent user experience, with Supabase handling user authentication and database storage.
+
+Application should be easy to maintain
+It should not have any build issues, so predict if any build issues may occur and address them proactively.
+Webpage should be responsive and user-friendly.
+It should be SEO friendly.
+This product is for affiliate marketers.
+It would be primarliy used in India, so defualt pricing should be in INR.
+
+
+###User Roles:###
+
+Admin: Application Admin
+Influencer: Influencer who can add the products, create collections, and share them with users. They should be able to add products from various sources.
+User: User should be able to see the products added by influencers and purchase them., create their own collections to share with their friends.
+
