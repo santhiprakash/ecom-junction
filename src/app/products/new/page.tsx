@@ -28,6 +28,7 @@ import { X, Link as LinkIcon, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import Image from "next/image";
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -367,11 +368,14 @@ export default function NewProductPage() {
                 <div className="space-y-4">
                   <div className="aspect-square bg-gray-100 rounded-md relative overflow-hidden">
                     {previewImage ? (
-                      <img
-                        src={previewImage}
-                        alt="Product preview"
-                        className="w-full h-full object-cover"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={previewImage}
+                          alt="Product preview"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
                     ) : (
                       <div className="flex items-center justify-center h-full text-muted-foreground">
                         No image provided

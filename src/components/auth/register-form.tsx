@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { UserRole } from "@/types";
 
 const registerSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -54,8 +53,9 @@ export const RegisterForm = () => {
       // Use the mock register function from our auth store
       await register(values.email, values.password, values.name);
       router.push('/dashboard');
-    } catch (error: any) {
-      setError(error.message || "Failed to sign up");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to sign up";
+      setError(errorMessage);
     }
   };
 

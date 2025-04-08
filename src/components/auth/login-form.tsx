@@ -46,8 +46,9 @@ export const LoginForm = () => {
       // Use the mock login function from our auth store
       await login(values.email, values.password);
       router.push('/dashboard');
-    } catch (error: any) {
-      setError(error.message || "Failed to sign in");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to sign in";
+      setError(errorMessage);
     }
   };
 
@@ -106,7 +107,7 @@ export const LoginForm = () => {
       </Form>
       
       <div className="mt-4 text-center text-sm">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link href="/auth/register" className="text-blue-600 hover:text-blue-800">
           Sign up
         </Link>

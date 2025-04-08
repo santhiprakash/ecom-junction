@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Collection, Product } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -41,11 +42,14 @@ export const CollectionCard = ({
           <div className="grid grid-cols-2 gap-2">
             {previewProducts.map((product) => (
               <div key={product.id} className="relative aspect-square bg-gray-100 rounded-md overflow-hidden">
-                <img
-                  src={product.image_url || "/placeholder-product.jpg"}
-                  alt={product.title}
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src={product.image_url || "/placeholder-product.jpg"}
+                    alt={product.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               </div>
             ))}
             {productCount > 4 && (
